@@ -46,15 +46,18 @@ public_users.post("/register", (req,res) => {
 public_users.get('/',function (req, res) {
   //Write your code here
   //  res.send(JSON.stringify(friends,null,4));
- return res.status(200).send(JSON.stringify(books))
+//  return res.status(200).send(JSON.stringify(books))
+  getBooks().then((bks) => res.send(JSON.stringify(bks)));
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   const isbnToFind = req.params.isbn;
-  let isbn = books[isbnToFind]
-   return res.status(200).json({isbn});
+  getByISBN(isbnToFind)
+  .then(
+    result => res.send(result),
+    error => res.status(error.status).json({message: error.message})); 
  });
   
 // Get book details based on author
